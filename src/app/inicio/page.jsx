@@ -16,7 +16,7 @@ export default function Login() {
     username: "",
     password: "",
   });
-console.log(process.env.NEXT_PUBLIC_API_URL)
+
   
   const handleInputChange = (e) => {
     setValues({
