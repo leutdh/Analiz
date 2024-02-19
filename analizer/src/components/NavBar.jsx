@@ -6,13 +6,14 @@ import Link from "next/link";
 import { BiLogOut } from "react-icons/bi";
 import Image from "next/image";
 import logo from "public/logo.png";
+import Cargando from "./Cargando";
 // Importa la biblioteca react-tooltip y los estilos
 import { Tooltip } from "react-tooltip";
 
 const NavbarComponent = () => {
   const [isSearchOpen, setSearchOpen] = useState(true);
   const { dni, setDni } = useDni();
-  const { handleBuscar } = useSearch();
+  const { handleBuscar, loading } = useSearch();
   const [isSelected, setiSelected] = useState(null);
 
   useEffect(() => {
@@ -25,6 +26,12 @@ const NavbarComponent = () => {
   const toggleSearch = () => {
     setSearchOpen(!isSearchOpen);
   };
+
+if (loading) return (
+
+  <Cargando />
+)
+
 
   return (
     <nav className="sticky top-0 z-50  bg-gradient-to-br from-cyan-800/90 via-cyan-700/80 to-cyan-700/90 ">

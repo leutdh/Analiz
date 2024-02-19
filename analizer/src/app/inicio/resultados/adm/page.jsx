@@ -35,9 +35,7 @@ export default function PagAdm() {
       <PrestAdm resultados={resultados.AdmPres} />
       <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <ResultadosAdmEvol resultados={resultados.admEvol} />
-      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
-      <CargAdm resultados={resultados.AdmCarg} />
-      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
+      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />   
       <ResumenAdm resultados={resultados.ResumenAdm} />
     </div>
   );

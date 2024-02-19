@@ -27,6 +27,9 @@ export const useSearch = () => {
 };
 // Hook personalizado para realizar búsquedas
 export function useSearchProv() {
+
+  const [loading, setLoading] = useState(false);
+
   const { dni } = useDni();
   const [resultados, setResultados] = useState({
     admEvol: [],
@@ -52,6 +55,9 @@ export function useSearchProv() {
   // Función para realizar la búsqueda de datos
   const handleBuscar = async (dni) => {
     try {
+
+      setLoading(true);
+
       // Realiza la búsqueda en ambas API y espera a que se completen ambas
       const [datosEvol, datosSoc, datosRes, datosPrest, datosCargos] =
         await Promise.all([
@@ -88,15 +94,23 @@ export function useSearchProv() {
       setResultados(resultadosCombinados);
     } catch (error) {
       console.error("Error al buscar datos:", error);
-    }
+    } finally {
+    // Indica que la búsqueda ha terminado, ya sea con éxito o con error
+    setLoading(false);
+  }
+
   };
 
+{/*
   useEffect(() => {
     // Realiza la búsqueda al cargar el componente y cada vez que cambie el DNI
     handleBuscar(dni);
   }, [dni]);
+  */}
+
 
   return {
+    loading,
     resultados,
     handleBuscar,
   };
