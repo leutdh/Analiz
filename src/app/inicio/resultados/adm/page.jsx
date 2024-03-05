@@ -16,15 +16,17 @@ export default function PagAdm() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [isEffectComplete, setIsEffectComplete] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    console.log("User:", user);
-    if (!user) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       router.push("/inicio");
     } else {
       setIsEffectComplete(true);
     }
-  }, [user]);
+  }, [token]);
 
   if (loading || !isEffectComplete) return <Cargando />;
 
@@ -35,7 +37,7 @@ export default function PagAdm() {
       <PrestAdm resultados={resultados.AdmPres} />
       <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <ResultadosAdmEvol resultados={resultados.admEvol} />
-      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />   
+      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <ResumenAdm resultados={resultados.ResumenAdm} />
     </div>
   );

@@ -4,11 +4,11 @@ import { useDni } from "@/context/dni.context";
 import { useSearch } from "@/context/search.context";
 import Link from "next/link";
 import { BiLogOut } from "react-icons/bi";
+import { Tooltip } from "react-tooltip";
 import Image from "next/image";
 import logo from "public/logo.png";
 import Cargando from "./Cargando";
 // Importa la biblioteca react-tooltip y los estilos
-import { Tooltip } from "react-tooltip";
 
 const NavbarComponent = () => {
   const [isSearchOpen, setSearchOpen] = useState(true);

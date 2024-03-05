@@ -13,22 +13,28 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+
+    const fetchData = async () => {
       setLoading(true);
-      if (token && isTokenValid(token)) {
-        const decodedToken = jwtDecode(token);
-        setUser(decodedToken);
-        setLoading(false);
-      
-      } else {
+      try {
+        if (token && isTokenValid(token)) {
+          const decodedToken = jwtDecode(token);
+          setUser(decodedToken);
+          setLoading(false);
+        } else {
+          setUser(null);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error during token decoding or user setting:", error);
         setUser(null);
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error during token decoding or user setting:", error);
-      setUser(null);
-    }
-  }, []);
+    };
+
+    fetchData();
+  }, []); // Dejé las dependencias vacías para que se ejecute solo una vez al montar el componente
 
   useEffect(() => {
     const fetchData = async () => {
