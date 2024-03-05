@@ -9,7 +9,8 @@ const AdmContent = () => {
   const resultadosAdmCarg = resultados.admEvol;
 
   const resultadosFeb2024 = resultadosAdmCarg
-  .filter((resultado) => resultado.Periodo === "02/2024")
+  .filter((resultado) => resultado.Periodo === "02/2024" || resultado.Periodo === "03/2024")
+
   .filter((resultado) => {
     const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
     return formaCobro !== "bapro - debito bancario";
