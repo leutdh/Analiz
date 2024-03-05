@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import AfiliadosAmup from "@/components/AfiliadosAmup";
 import PrestAmup from "@/components/PrestAmup";
 import ResultadosAmupEvol from "@/components/ResultadosAmupEvol";
@@ -6,19 +7,25 @@ import CargAmup from "@/components/CargAmup";
 import { useSearch } from "@/context/search.context";
 import { useAuth } from "@/context/auth.context";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
 import Cargando from "@/components/Cargando";
 
 export default function PagAmup() {
   const { resultados } = useSearch();
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [isEffectComplete, setIsEffectComplete] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (!user) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
       router.push("/inicio");
+    } else {
+      setIsEffectComplete(true);
     }
-  }, []);
+  }, [token]);
 
   if(loading) return <Cargando />
   
