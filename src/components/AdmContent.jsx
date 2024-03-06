@@ -16,9 +16,20 @@ const AdmContent = () => {
     return formaCobro !== "bapro - debito bancario";
   });
 
-  // Ordena los resultados alfabéticamente por concepto
-  resultadosFeb2024.sort((a, b) => a.Concept.localeCompare(b.Concept));
+   // Ordena los resultados por periodo de mayor a menor y luego por concepto alfabéticamente
+   resultadosFeb2024.sort((a, b) => {
+    // Convierte las fechas a objetos Date para facilitar la comparación
+    const fechaA = new Date(a.Periodo);
+    const fechaB = new Date(b.Periodo);
 
+    // Compara las fechas y, en caso de ser iguales, ordena por concepto alfabéticamente
+    if (fechaB - fechaA === 0) {
+      return a.Concept.localeCompare(b.Concept);
+    }
+
+    // Ordena por periodo de mayor a menor
+    return fechaB - fechaA;
+  });
   // Maneja el estado de carga
   if (loading) return <Cargando />;
 

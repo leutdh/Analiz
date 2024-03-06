@@ -27,7 +27,6 @@ export const useSearch = () => {
 };
 // Hook personalizado para realizar búsquedas
 export function useSearchProv() {
-
   const [loading, setLoading] = useState(false);
 
   const { dni } = useDni();
@@ -50,12 +49,12 @@ export function useSearchProv() {
     AdmCarg: [],
     FacCarg: [],
     AmupCarg: [],
+    Colocacion: [],
   });
 
   // Función para realizar la búsqueda de datos
   const handleBuscar = async (dni) => {
     try {
-
       setLoading(true);
 
       // Realiza la búsqueda en ambas API y espera a que se completen ambas
@@ -88,6 +87,7 @@ export function useSearchProv() {
         AdmCarg: datosCargos.AdmCarg || [],
         FacCarg: datosCargos.FacCarg || [],
         AmupCarg: datosCargos.AmupCarg || [],
+        Colocacion: datosEvol.Colocacion || [],
       };
 
       // Actualiza el estado con los resultados combinados
@@ -95,19 +95,19 @@ export function useSearchProv() {
     } catch (error) {
       console.error("Error al buscar datos:", error);
     } finally {
-    // Indica que la búsqueda ha terminado, ya sea con éxito o con error
-    setLoading(false);
-  }
-
+      // Indica que la búsqueda ha terminado, ya sea con éxito o con error
+      setLoading(false);
+    }
   };
 
-{/*
+  {
+    /*
   useEffect(() => {
     // Realiza la búsqueda al cargar el componente y cada vez que cambie el DNI
     handleBuscar(dni);
   }, [dni]);
-  */}
-
+  */
+  }
 
   return {
     loading,

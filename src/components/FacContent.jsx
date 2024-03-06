@@ -9,16 +9,32 @@ const FacContent = () => {
   const resultadosFacCarg = resultados.facEvol;
 
   const resultadosFeb2024 = resultadosFacCarg
-  .filter((resultado) => resultado.Periodo === "02/2024" || resultado.Periodo === "03/2024")
+    .filter(
+      (resultado) =>
+        resultado.Periodo === "02/2024" || resultado.Periodo === "03/2024"
+    )
 
-  .filter((resultado) => {
-    const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
-    return formaCobro !== "bapro - debito bancario";
+    .filter((resultado) => {
+      const formaCobro = resultado.FormCobro
+        ? resultado.FormCobro.toLowerCase()
+        : "";
+      return formaCobro !== "bapro - debito bancario";
+    });
+
+  // Ordena los resultados por periodo de mayor a menor y luego por concepto alfabéticamente
+  resultadosFeb2024.sort((a, b) => {
+    // Convierte las fechas a objetos Date para facilitar la comparación
+    const fechaA = new Date(a.Periodo);
+    const fechaB = new Date(b.Periodo);
+
+    // Compara las fechas y, en caso de ser iguales, ordena por concepto alfabéticamente
+    if (fechaB - fechaA === 0) {
+      return a.Concept.localeCompare(b.Concept);
+    }
+
+    // Ordena por periodo de mayor a menor
+    return fechaB - fechaA;
   });
-
-
-  // Ordena los resultados alfabéticamente por concepto
-  resultadosFeb2024.sort((a, b) => a.Concept.localeCompare(b.Concept));
 
   // Maneja el estado de carga
   if (loading) return <Cargando />;
@@ -27,7 +43,7 @@ const FacContent = () => {
     <div className="relative overflow-x-auto shadow-md w-8/12 m-auto rounded-3xl bg-gradient-to-br from-slate-200/90 via-slate-100/80 to-slate-200/90 shadow-slate-700/50">
       <table className="w-full text-sm text-left rtl:text-right text-gray-800 table-auto">
         <caption className="p-2 text-lg border-b border-gray-900/50 font-semibold text-center rtl:text-right text-gray-900 ">
-        <h1 style={{ fontSize: '1rem' }}>FACILITAR</h1>
+          <h1 style={{ fontSize: "1rem" }}>FACILITAR</h1>
           {resultadosFacSoc && resultadosFacSoc.length === 0 && (
             <p className="mt-2 text-sm font-normal text-gray-500 ">
               El cliente no es socio en FACILITAR
