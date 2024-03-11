@@ -10,6 +10,7 @@ import { useAuth } from "@/context/auth.context";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cargando from "@/components/Cargando";
+import Drawer from "@/components/Drawer";
 
 export default function PagAdm() {
   const { resultados } = useSearch();
@@ -17,6 +18,10 @@ export default function PagAdm() {
   const router = useRouter();
   const [isEffectComplete, setIsEffectComplete] = useState(false);
   const [token, setToken] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -39,6 +44,8 @@ export default function PagAdm() {
       <ResultadosAdmEvol resultados={resultados.admEvol} />
       <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <ResumenAdm resultados={resultados.ResumenAdm} />
+      
+      
     </div>
   );
 }

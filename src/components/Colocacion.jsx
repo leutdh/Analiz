@@ -6,12 +6,15 @@ const Colocacion = () => {
   // Obtén los datos del contexto de búsqueda
   const { resultados, loading } = useSearch();
   const ResultadosColoc = resultados.Colocacion;
+
   // Maneja el estado de carga
   if (loading) return <Cargando />;
 
   return (
     <div className="relative overflow-x-auto shadow-md rounded-3xl w-8/12 m-auto bg-gradient-to-br from-slate-200/90 via-slate-100/80 to-slate-200/90 shadow-slate-700/50">
-        <h1 className="text-center uppercase m-2" style={{ fontSize: '1rem' }}>COLOCACION FEBRERO</h1>
+      <h1 className="text-center uppercase m-2" style={{ fontSize: "1rem" }}>
+        COLOCACION FEBRERO
+      </h1>
       <table className="w-full text-sm text-left rtl:text-right text-gray-800 table-auto">
         <thead className="text-xs text-gray-700 uppercase  ">
           <tr>
@@ -53,13 +56,13 @@ const Colocacion = () => {
                   {resultado.Nombre}
                 </td>
                 <td scope="row" className="px-4 py-2 text-gray-900 w-1/12 ">
-                  {resultado.Monto}
+                  ${resultado.Monto}
                 </td>
                 <td scope="row" className="px-4 py-2 text-gray-900 w-1/12 ">
                   {resultado.Plan}
                 </td>
                 <td scope="row" className="px-4 py-2 text-gray-900 w-1/12 ">
-                  {resultado.MontoCuot}
+                  ${resultado.MontoCuot}
                 </td>
                 <td scope="row" className="px-4 py-2 text-gray-900 w-1/12 ">
                   {resultado.Desc}

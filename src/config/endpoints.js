@@ -28,6 +28,11 @@ const AdminApi = {
   getName: (userId) => api.get(`/admins/${userId}`),
 };
 
+// Nuevo endpoint para obtener ayudas
+
+
+
+
 export const buscarDatos = async (dni) => {
   try {
     console.log("Buscando datos...");
@@ -120,6 +125,9 @@ export const buscarDatosPrest = async (dni) => {
     throw error;
   }
 };
+
+
+
 
 
 export { AuthApi, AdminApi };
