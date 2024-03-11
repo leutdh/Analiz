@@ -10,7 +10,7 @@ import { useAuth } from "@/context/auth.context";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Cargando from "@/components/Cargando";
-import Drawer from "@/components/Drawer";
+import Colocacion from "@/components/Colocacion";
 
 export default function PagAdm() {
   const { resultados } = useSearch();
@@ -18,10 +18,7 @@ export default function PagAdm() {
   const router = useRouter();
   const [isEffectComplete, setIsEffectComplete] = useState(false);
   const [token, setToken] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,6 +34,8 @@ export default function PagAdm() {
 
   return (
     <div className="relative container mx-auto mt-2 p-5 min-h-screen border rounded-lg bg-gradient-to-r from-cyan-400/10 via-cyan-300/10 to-cyan-400/10 shadow-sm shadow-slate-950/10  ">
+      <Colocacion/>
+      <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <AfiliadosAdm resultados={resultados.AdmSoc} />
       <hr className="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
       <PrestAdm resultados={resultados.AdmPres} />
