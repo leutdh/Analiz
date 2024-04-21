@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { TbArrowBadgeDown, TbArrowBadgeUp } from "react-icons/tb";
+import Resu24 from "./Resumen/Resu24";
 
 function ResumenSima({ resultados }) {
   const [tablaMinimizada, setTablaMinimizada] = useState(false);
   const [tablaUno, setTablaUno] = useState(true);
   const [tablaDos, setTablaDos] = useState(true);
   const [tablaTres, setTablaTres] = useState(true);
-  const [tablaCuatro, setTablaCuatro] = useState(false);
+  const [tablaCuatro, setTablaCuatro] = useState(true);
+  const [tablaCinco, setTablaCinco] = useState(false);
 
   const toggleTablaUno = () => {
     setTablaUno(!tablaUno);
@@ -23,6 +25,11 @@ function ResumenSima({ resultados }) {
   const toggleTablaCuatro = () => {
     setTablaCuatro(!tablaCuatro);
   };
+
+  const toggleTablaCinco = () => {
+    setTablaCinco(!tablaCinco);
+  };
+
 
   const toggleTablaMinimizada = () => {
     setTablaMinimizada(!tablaMinimizada);
@@ -704,6 +711,41 @@ function ResumenSima({ resultados }) {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+
+      <div
+        className={`relative overflow-x-auto shadow-md ${
+          tablaMinimizada
+            ? "h-0 opacity-0 transition-all ease-in-out duration-300"
+            : "block transition-all ease-in-out duration-300"
+        }`}
+      >
+        <div className="w-full flex items-center">
+          <h1 className="p-2 text-lg font-semibold Shadow text-neutral-100 m-auto">
+            Cobranza 2024
+          </h1>
+          <button
+            onClick={toggleTablaCinco}
+            className="mr-4 Shadow-sm   shadow shadow-slate-100/70 hover:bg-cyan-800 hover:shadow-cyan-950 text-white rounded flex items-center"
+          >
+            {tablaCinco ? (
+              <TbArrowBadgeDown size={30} />
+            ) : (
+              <TbArrowBadgeUp size={30} />
+            )}
+          </button>
+        </div>
+
+        <div
+          className={`relative overflow-x-auto shadow-md ${
+            tablaCinco
+              ? "h-0 opacity-0 transition-all ease-in-out duration-300"
+              : " block transition-all ease-in-out duration-300"
+          }`}
+        >
+          <Resu24 resultados={resultados} />
         </div>
       </div>
     </div>
