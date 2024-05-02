@@ -13,7 +13,7 @@ const Colocacion = () => {
   return (
     <div className="relative overflow-x-auto shadow-md rounded-3xl w-8/12 m-auto bg-gradient-to-br from-slate-200/90 via-slate-100/80 to-slate-200/90 shadow-slate-700/50">
       <h1 className="text-center uppercase m-2" style={{ fontSize: "1rem" }}>
-        COLOCACION FEBRERO
+        COLOCACION ABRIL
       </h1>
       <table className="w-full text-sm text-left rtl:text-right text-gray-800 table-auto">
         <thead className="text-xs text-gray-700 uppercase  ">
