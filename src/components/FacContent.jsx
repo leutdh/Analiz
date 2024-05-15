@@ -11,7 +11,7 @@ const FacContent = () => {
   const resultadosFeb2024 = resultadosFacCarg
     .filter(
       (resultado) =>
-        resultado.Periodo === "03/2024" || resultado.Periodo === "04/2024"
+        resultado.Periodo === "04/2024" || resultado.Periodo === "05/2024"
     )
 
     .filter((resultado) => {

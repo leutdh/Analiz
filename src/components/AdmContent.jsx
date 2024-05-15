@@ -9,7 +9,7 @@ const AdmContent = () => {
   const resultadosAdmCarg = resultados.admEvol;
 
   const resultadosFeb2024 = resultadosAdmCarg
-  .filter((resultado) => resultado.Periodo === "03/2024" || resultado.Periodo === "04/2024")
+  .filter((resultado) => resultado.Periodo === "04/2024" || resultado.Periodo === "05/2024")
 
   .filter((resultado) => {
     const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
