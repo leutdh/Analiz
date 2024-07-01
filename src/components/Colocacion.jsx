@@ -1,6 +1,6 @@
 "use client";
 import { useSearch } from "@/context/search.context";
-import Cargando from "./Generales/Cargando";
+import Cargando from "./Cargando";
 
 const Colocacion = () => {
   // Obtén los datos del contexto de búsqueda
