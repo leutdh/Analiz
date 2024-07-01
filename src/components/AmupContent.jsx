@@ -2,136 +2,135 @@
 import { useSearch } from "@/context/search.context";
 import Cargando from "./Cargando";
 
-const AmupContent    = () => {
-  // Obtén los datos del contexto de búsqueda
+const AmupContent = () => {
   const { resultados, loading } = useSearch();
-  const resultadosAmupSoc = resultados.AmupSoc;
-  const resultadosAmupCarg = resultados.amupEvol;
+  const resultadosAmupSoc = resultados.SociosAmuproba;
+  const resultadosAmupCarg = resultados.AmuprobaCargosEnviados;
 
   const resultadosFeb2024 = resultadosAmupCarg
-  .filter((resultado) => resultado.Periodo === "04/2024" || resultado.Periodo === "05/2024")
+    .filter((resultado) => resultado.Periodo === "05/2024" || resultado.Periodo === "06/2024")
+    .filter((resultado) => {
+      const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
+      return formaCobro !== "bapro - debito bancario";
+    })
+    .sort((a, b) => {
+      const fechaA = new Date(`01/${a.Periodo}`);
+      const fechaB = new Date(`01/${b.Periodo}`);
+      return fechaB - fechaA;
+    });
 
-  .filter((resultado) => {
-    const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
-    return formaCobro !== "bapro - debito bancario";
-  });
-
-
-
-   // Ordena los resultados por periodo de mayor a menor y luego por concepto alfabéticamente
-   resultadosFeb2024.sort((a, b) => {
-    // Convierte las fechas a objetos Date para facilitar la comparación
-
-    const fechaA = new Date(`01/${a.Periodo}`);
-    const fechaB = new Date(`01/${b.Periodo}`);
-    return fechaB - fechaA;
-  });
-
-
-
-  // Maneja el estado de carga
   if (loading) return <Cargando />;
 
   return (
-    <div className="relative overflow-x-auto shadow-md w-8/12 m-auto rounded-3xl bg-gradient-to-br from-slate-200/90 via-slate-100/80 to-slate-200/90 shadow-slate-700/50">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-800 table-auto">
-        <caption className="p-2 text-lg  border-b border-gray-900/50 font-semibold text-center rtl:text-right text-gray-900 ">
-        <h1 style={{ fontSize: '1rem' }}>AMUPROBA</h1>
-          {resultadosAmupSoc && resultadosAmupSoc.length === 0 && (
-            <p className="mt-2 text-sm font-normal text-gray-500 ">
+    <div className="max-w-5xl mx-auto p-4">
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-teal-200/50 to-purple-300/60 p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600 mb-4">
+            AMUPROBA
+          </h2>
+          {resultadosAmupSoc && resultadosAmupSoc.length === 0 ? (
+            <p className="text-center text-gray-600">
               El cliente no es socio en AMUPROBA
             </p>
-          )}
-          {resultadosAmupSoc.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-center mt-2 text-sm font-normal  text-gray-800 "
-            >
-              <p>
-                <span className="ml-3 font-semibold">Apellido:</span>{" "}
-                {item.Apellido}
-              </p>
-              <p>
-                <span className="ml-3 font-semibold">Nombre:</span>{" "}
-                {item.Nombre}
-              </p>
-              <p>
-                <span className="ml-3 font-semibold">DNI:</span>{" "}
-                {item.NumeroDeDoc}
-              </p>
-              <p>
-                <span className="ml-3 font-semibold">Estado:</span> {item.Estad}
-              </p>
-              <p>
-                <span className="ml-3 font-semibold">Dependencia:</span>{" "}
-                {item.Depen}
-              </p>
-            </div>
-          ))}
-        </caption>
-
-        <thead className="text-xs text-gray-700 uppercase  ">
-          <tr>
-            <th scope="col" className="px-4 py-2 w-8/12">
-              Concepto
-            </th>
-            <th scope="col" className="px-4 py-2 w-1/12">
-              Periodo
-            </th>
-           
-            <th scope="col" className="px-4 py-2 w-4/12">
-              Estado
-            </th>
-          
-          </tr>
-        </thead>
-        <tbody className="text-xs">
-          {resultadosFeb2024 && resultadosFeb2024.length > 0 ? (
-            resultadosFeb2024.map((resultado, index) => (
-              <tr
-                key={index}
-                className={`${
-                  index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"
-                } border text-left border-slate-400 uppercase htransition duration-300 ease-in-out hover:bg-orange-300	`}
-              >
-                {/* Celdas de datos con bordes y tamaño de texto pequeño */}
-                <td scope="row" className="px-4 py-2 font-bold w-8/12">
-                  {resultado.Concept}
-                </td>
-                <td
-                  scope="row"
-                  className="px-4 py-2 text-gray-900 w-1/12 "
-                >
-                  {resultado.Periodo}
-                </td>
-               
-                <td
-                  scope="row"
-                  className={`px-4 py-2 w-4/12  ${
-                    resultado.Estado === "Cobrado"
-                      ? "text-green-700"
-                      : resultado.Estado === "Rechazado"
-                      ? "text-red-600"
-                      : "text-gray-900" // color predeterminado para otros estados
-                  }`}
-                >
-                  {resultado.Estado}
-                </td>
-              
-              </tr>
-            ))
           ) : (
-            <tr>
-              <td
-                colSpan="3"
-                className="px-1 py-1 bg-gray-200 border-b text-sm text-center font-semibold shadow-md"
-              >
-                No se encontraron resultados para AMUPROBA.
-              </td>
-            </tr>
+            resultadosAmupSoc.map((item) => (
+              <div key={item.id} className="flex flex-wrap -mx-2">
+                <div className="w-full md:w-1/2 px-2 mb-4">
+                  <div className="bg-white rounded-lg shadow-md p-4 h-full">
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                      Datos Personales
+                    </h3>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Apellido:</span>{" "}
+                      <span className="text-gray-600">{item.Apellido}</span>
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Nombre:</span>{" "}
+                      <span className="text-gray-600">{item.Nombre}</span>
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">DNI:</span>{" "}
+                      <span className="text-gray-600">{item.NumDoc}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full md:w-1/2 px-2 mb-4">
+                  <div className="bg-white rounded-lg shadow-md p-4 h-full">
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                      Información Adicional
+                    </h3>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Estado:</span>{" "}
+                      <span className="text-gray-600">{item.Estad}</span>
+                    </p>
+                    <p className="text-gray-700">
+                      <span className="font-semibold">Dependencia:</span>{" "}
+                      <span className="text-gray-600">{item.Depen}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))
           )}
-        </tbody>
-      </table>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b-2 border-gray-300">
+                  Periodo
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b-2 border-gray-300">
+                  Concepto
+                </th>
+                <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider border-b-2 border-gray-300">
+                  Estado
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {resultadosFeb2024 && resultadosFeb2024.length > 0 ? (
+                resultadosFeb2024.map((resultado, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-300 transition-colors duration-200"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {resultado.Periodo}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {resultado.Concept}
+                    </td>
+                    <td className="px-6 py-4 text-center whitespace-nowrap text-sm">
+                      <span
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          resultado.Estado === "Cobrado"
+                            ? "bg-green-100 text-green-800"
+                            : resultado.Estado === "Rechazado"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {resultado.Estado}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="3"
+                    className="px-6 py-4 text-sm text-center text-gray-500 italic"
+                  >
+                    No se encontraron resultados para AMUPROBA.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
