@@ -4,8 +4,8 @@ import Cargando from "./Cargando";
 
 const FacContent = () => {
   const { resultados, loading } = useSearch();
-  const resultadosFacSoc = resultados.SociosFacilitar;
-  const resultadosFacCarg = resultados.FacilitarCargosEnviados;
+  const resultadosFacSoc = resultados.FacSoc;
+  const resultadosFacCarg = resultados.facEvol;
 
   const resultadosFeb2024 = resultadosFacCarg
     .filter((resultado) => resultado.Periodo === "05/2024" || resultado.Periodo === "06/2024")

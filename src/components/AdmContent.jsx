@@ -4,8 +4,8 @@ import Cargando from "./Cargando";
 
 const AdmContent = () => {
   const { resultados, loading } = useSearch();
-  const resultadosAdmSoc = resultados.SociosAdm;
-  const resultadosAdmCarg = resultados.AdmCargosEnviados;
+  const resultadosAdmSoc = resultados.AdmSoc;
+  const resultadosAdmCarg = resultados.admEvol;
 
   const resultadosFeb2024 = resultadosAdmCarg
     .filter(

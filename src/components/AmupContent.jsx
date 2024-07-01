@@ -4,8 +4,8 @@ import Cargando from "./Cargando";
 
 const AmupContent = () => {
   const { resultados, loading } = useSearch();
-  const resultadosAmupSoc = resultados.SociosAmuproba;
-  const resultadosAmupCarg = resultados.AmuprobaCargosEnviados;
+  const resultadosAmupSoc = resultados.AmupSoc;
+  const resultadosAmupCarg = resultados.amupEvol;
 
   const resultadosFeb2024 = resultadosAmupCarg
     .filter((resultado) => resultado.Periodo === "05/2024" || resultado.Periodo === "06/2024")

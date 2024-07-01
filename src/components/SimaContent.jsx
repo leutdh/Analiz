@@ -4,8 +4,8 @@ import Cargando from "./Cargando";
 
 const SimaContent = () => {
   const { resultados, loading } = useSearch();
-  const resultadosSimaSoc = resultados.SociosSima;
-  const resultadosSimaCarg = resultados.SimaCargosEnviados;
+  const resultadosSimaSoc = resultados.SimaSoc;
+  const resultadosSimaCarg = resultados.simaEvol;
 
   const resultadosFeb2024 = resultadosSimaCarg
     .filter((resultado) => resultado.Periodo === "05/2024" || resultado.Periodo === "06/2024")
