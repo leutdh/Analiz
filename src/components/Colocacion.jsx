@@ -23,7 +23,7 @@ const Colocacion = () => {
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="bg-gradient-to-r from-teal-200/50 to-purple-300/60 p-6 border-b border-gray-200 flex items-center justify-center min-h-[100px]">
           <h2 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-purple-600">
-            COLOCACION AGOSTO
+            COLOCACION OCTUBRE
           </h2>
         </div>
 

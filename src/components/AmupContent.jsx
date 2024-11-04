@@ -8,7 +8,7 @@ const AmupContent = () => {
   const resultadosAmupCarg = resultados.amupEvol;
 
   const resultadosFeb2024 = resultadosAmupCarg
-    .filter((resultado) => resultado.Periodo === "07/2024" || resultado.Periodo === "08/2024")
+    .filter((resultado) => resultado.Periodo === "09/2024" || resultado.Periodo === "10/2024")
     .filter((resultado) => {
       const formaCobro = resultado.FormCobro ? resultado.FormCobro.toLowerCase() : "";
       return formaCobro !== "bapro - debito bancario";

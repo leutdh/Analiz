@@ -10,7 +10,7 @@ const AdmContent = () => {
   const resultadosFeb2024 = resultadosAdmCarg
     .filter(
       (resultado) =>
-        resultado.Periodo === "07/2024" || resultado.Periodo === "08/2024"
+        resultado.Periodo === "09/2024" || resultado.Periodo === "10/2024"
     )
     .filter((resultado) => {
       const formaCobro = resultado.FormCobro
