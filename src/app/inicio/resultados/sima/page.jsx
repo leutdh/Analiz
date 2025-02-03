@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 import Cargando from "@/components/Cargando";
 
 export default function PagSima() {
-  const { resultados } = useSearch();
-  const { user, loading } = useAuth();
+  const { resultados, loading } = useSearch();
+  const { user } = useAuth();
   const router = useRouter();
   const [isEffectComplete, setIsEffectComplete] = useState(false);
   const [token, setToken] = useState("");

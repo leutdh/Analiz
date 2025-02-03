@@ -54,7 +54,6 @@ export function useSearchProv() {
     CargosAmup: [],
     CargosFac: [],
     CargosSima: [],
-  
   });
 
   // Función para realizar la búsqueda de datos
@@ -93,7 +92,6 @@ export function useSearchProv() {
         FacCarg: datosCargos.FacCarg || [],
         AmupCarg: datosCargos.AmupCarg || [],
         Colocacion: datosEvol.Colocacion || [],
-       
       };
 
       // Actualiza el estado con los resultados combinados

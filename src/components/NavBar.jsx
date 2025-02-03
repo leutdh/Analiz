@@ -1,229 +1,162 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDni } from "@/context/dni.context";
 import { useSearch } from "@/context/search.context";
 import Link from "next/link";
 import { BiLogOut } from "react-icons/bi";
-import { Tooltip } from "react-tooltip";
 import Image from "next/image";
 import logo from "public/logo.png";
-import Cargando from "./Cargando";
-// Importa la biblioteca react-tooltip y los estilos
 
 const NavbarComponent = () => {
-  const [isSearchOpen, setSearchOpen] = useState(true);
-  const { dni, setDni } = useDni();
-  const { handleBuscar, loading } = useSearch();
+  const [searchValue, setSearchValue] = useState(""); // Estado para el input de búsqueda
+  const { setDni } = useDni(); // Guardar el valor del DNI
+  const { handleBuscar, loading } = useSearch(); // Acción de búsqueda
   const [isSelected, setiSelected] = useState(null);
+  const [isSearchOpen, setSearchOpen] = useState(false);
 
-  useEffect(() => {
-    // Realiza la búsqueda de datos cuando el valor de 'dni' cambie
-    if (dni.trim() !== "") {
-      handleBuscar(dni); // Llama a la función handleBuscar
+  const handleSearch = () => {
+    if (searchValue.trim() !== "") {
+      setDni(searchValue); // Actualizar el valor del contexto
+      handleBuscar(searchValue); // Llamar a la búsqueda
     }
-  }, [dni]);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const toggleSearch = () => {
     setSearchOpen(!isSearchOpen);
   };
 
-if (loading) return (
-
-  <Cargando />
-)
-
-
   return (
-    <nav className="sticky top-0 z-50  bg-gradient-to-br from-cyan-800/90 via-cyan-700/80 to-cyan-700/90 ">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <div className=" -m-6">
-          <Image
-            src={logo}
-            width={180}
-            className="h-15 mr-7 Degrade"
-            alt="Analizer v5"
-          />
-        </div>
-        <div className="flex  mt-auto mb-auto  md:order-2">
-          <button
-            type="button"
-            onClick={toggleSearch}
-            className="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1"
-            aria-controls="navbar-search"
-            aria-expanded={isSearchOpen}
-          >
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+    <nav className="sticky top-0 z-50 bg-white shadow-md border-b border-pink-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-3">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link href="/">
+              <Image src={logo} width={130} alt="Logo" />
+            </Link>
+          </div>
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex space-x-6">
+            {[
+              { name: "COLOCACION", href: "/inicio/resultados/colocacion" },
+              { name: "ADM", href: "/inicio/resultados/adm" },
+              { name: "SIMA", href: "/inicio/resultados/sima" },
+              { name: "AMUPROBA", href: "/inicio/resultados/amuproba" },
+              { name: "FACILITAR", href: "/inicio/resultados/facilitar" },
+            ].map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setiSelected(item.name)}
+                className={`text-sm font-medium hover:text-pink-500 transition ${
+                  isSelected === item.name
+                    ? "text-pink-600 border-b-2 border-pink-600"
+                    : "text-gray-700"
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Search and Logout */}
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Buscar DNI"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={handleKeyDown} // Detectar tecla Enter
+                className="w-64 px-4 py-2 rounded-full border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
               />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
-          {isSearchOpen && (
-            <div className="relative hidden items-center md:flex">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
-                  <span className="sr-only">Search icon</span>
-                </div>
-                <input
-                  type="text"
-                  id="search-navbar"
-                  className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Ingrese DNI"
-                  value={dni}
-                  onChange={(e) => setDni(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center justify-center ml-7">
-                <Tooltip id="my-tooltip" />
-                <BiLogOut
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content="Cerrar sesion"
-                  size={30}
-                  className="block cursor-pointer py-2 pl-3 pr-4 text-gray-100 rounded hover:bg-cyan-800 md:hover:bg-transparent md:hover:text-cyan-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                  data-tip="Cerrar sesión"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    window.location.href = "/";
-                  }}
-                />
-              </div>
+              <button
+                onClick={handleSearch}
+                className="px-4 py-2 text-sm text-white bg-pink-500 hover:bg-pink-600 rounded-full transition"
+              >
+                Buscar
+              </button>
             </div>
-          )}
-          <button
-            type="button"
-            onClick={toggleSearch}
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            aria-controls="navbar-search"
-            aria-expanded={isSearchOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+
+            <BiLogOut
+              size={24}
+              className="cursor-pointer text-gray-600 hover:text-pink-500 transition"
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.href = "/";
+              }}
+            />
+
+            {/* Mobile Toggle */}
+            <button
+              onClick={toggleSearch}
+              className="md:hidden text-pink-500 focus:outline-none"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-            isSearchOpen ? "" : "hidden"
-          }`}
-          id="navbar-search"
-        >
-          <div className="relative mt-3 md:hidden">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
                 fill="none"
-                viewBox="0 0 20 20"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
                 <path
-                  stroke="currentColor"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
-            </div>
-            <input
-              type="text"
-              id="search-navbar"
-              className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Ingrese Dni..."
-              value={dni}
-              onChange={(e) => setDni(e.target.value)} // Actualizar el estado del DNI
-              onClick={() => handleBuscar(dni)}
-            />
+            </button>
           </div>
-          <ul className="flex flex-col p-3 bg-gradient-to-r from-slate-300/90 via-slate-100/90 to-slate-300/90 rounded-lg md:flex-row md:space-x-8">
-            <li>
-              <Link
-                href="/inicio/resultados/adm"
-                onClick={() => setiSelected("adm")}
-                className={`py-2 px-4 rounded hover:bg-cyan-800/70 hover:text-white ${
-                  isSelected === "adm" ? " bg-cyan-600/80 text-white Shadow shadow-sm shadow-slate-900/90" : ""
-                }`}
-              >
-                ADM
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                href="/inicio/resultados/sima"
-                onClick={() => setiSelected("sima")}
-                className={`py-2 px-4 rounded hover:bg-cyan-800/70 hover:text-white ${
-                  isSelected === "sima" ?  "bg-cyan-600/80 text-white Shadow shadow-sm shadow-slate-900/90" : ""
-                }`}
-              >
-                SIMA
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                href="/inicio/resultados/amuproba"
-                onClick={() => setiSelected("amuproba")}
-                className={`py-2 px-4 rounded hover:bg-cyan-800/70 hover:text-white ${
-                  isSelected === "amuproba" ? " bg-cyan-600/80 text-white Shadow shadow-sm shadow-slate-900/90" : ""
-                }`}
-              >
-                AMUPROBA
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                href="/inicio/resultados/facilitar"
-                onClick={() => setiSelected("facilitar")}
-                className={`py-2 px-4 rounded hover:bg-cyan-800/70 hover:text-white ${
-                  isSelected === "facilitar" ? " bg-cyan-600/80 text-white Shadow shadow-sm shadow-slate-900/90" : ""
-                }`}
-              >
-                FACILITAR
-              </Link>
-            </li>
-          </ul>
         </div>
+
+        {/* Mobile Search & Links */}
+        {isSearchOpen && (
+          <div className="md:hidden mt-2 pb-3 space-y-2 border-t border-pink-100">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Buscar DNI"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={handleKeyDown} // Detectar tecla Enter en mobile también
+                className="w-full px-4 py-2 rounded-lg border border-pink-200 focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
+              />
+              <button
+                onClick={handleSearch}
+                className="px-4 py-2 text-sm text-white bg-pink-500 hover:bg-pink-600 rounded-lg transition"
+              >
+                Buscar
+              </button>
+            </div>
+            <div className="flex flex-col space-y-1">
+              {[
+              {name:"COLOCACION",href:"/inicio/resultados/colocacion"},
+                { name: "ADM", href: "/inicio/resultados/adm" },
+                { name: "SIMA", href: "/inicio/resultados/sima" },
+                { name: "AMUPROBA", href: "/inicio/resultados/amuproba" },
+                { name: "FACILITAR", href: "/inicio/resultados/facilitar" },
+              ].map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setiSelected(item.name)}
+                  className={`block text-sm text-center text-gray-700 hover:text-pink-500 py-1 ${
+                    isSelected === item.name ? "font-medium text-pink-600" : ""
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
