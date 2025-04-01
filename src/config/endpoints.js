@@ -35,9 +35,9 @@ const AdminApi = {
 
 export const buscarDatos = async (dni) => {
   try {
-    console.log("Buscando datos...");
+    
     const response = await api.get(`/buscar-datos?dni=${dni}`);
-    console.log("Respuesta:", response.data); // Verificar la respuesta
+    
 
     if (response.data) {
       // Si se encontraron datos en la base
@@ -55,10 +55,9 @@ export const buscarDatos = async (dni) => {
 
 export const buscarDatosSoc = async (dni) => {
   try {
-    console.log("Buscando datos...");
+    
     const response = await api.get(`/buscar-afiliado?dni=${dni}`);
-    console.log("Respuesta:", response.data); // Verificar la respuesta
-
+    
     if (response.data) {
       // Si se encontraron datos en la base
       return response.data;
@@ -74,9 +73,9 @@ export const buscarDatosSoc = async (dni) => {
 
 export const buscarDatosRes = async (dni) => {
   try {
-    console.log("Buscando datos...");
+    
     const response = await api.get(`/buscar-resu?dni=${dni}`);
-    console.log("Respuesta:", response.data); // Verificar la respuesta
+     // Verificar la respuesta
     if (response.data) {
       // Si se encontraron datos en la base
       return response.data;
@@ -92,9 +91,9 @@ export const buscarDatosRes = async (dni) => {
 
 export const buscarDatosCargos = async (dni) => {
   try {
-    console.log("Buscando datos...");
+    
     const response = await api.get(`/buscar-carg?dni=${dni}`);
-    console.log("Respuesta:", response.data); // Verificar la respuesta
+     
     if (response.data) {
       // Si se encontraron datos en la base
       return response.data;
@@ -110,9 +109,9 @@ export const buscarDatosCargos = async (dni) => {
 
 export const buscarDatosPrest = async (dni) => {
   try {
-    console.log("Buscando datos...");
+    
     const response = await api.get(`/buscar-prest?dni=${dni}`);
-    console.log("Respuesta:", response.data); // Verificar la respuesta
+    
     if (response.data) {
       // Si se encontraron datos en la base
       return response.data;

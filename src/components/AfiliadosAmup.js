@@ -3,134 +3,99 @@ import { Tooltip } from "react-tooltip";
 
 function AfiliadosAmup({ resultados }) {
   const [tablaMinimizada, setTablaMinimizada] = useState(false);
-  const [ordenarPor, setOrdenarPor] = useState(null);
-  const [direccionOrden, setDireccionOrden] = useState('asc');
 
   const toggleTablaMinimizada = () => {
     setTablaMinimizada(!tablaMinimizada);
   };
 
-  const handleOrdenar = (columna) => {
-    if (ordenarPor === columna) {
-      setDireccionOrden(direccionOrden === 'asc' ? 'desc' : 'asc');
-    } else {
-      setOrdenarPor(columna);
-      setDireccionOrden('asc');
-    }
-  };
-
-  const resultadosOrdenados = useMemo(() => {
-    if (!resultados || resultados.length === 0) return resultados;
-    
-    return [...resultados].sort((a, b) => {
-      if (!ordenarPor) return 0;
-      
-      const valorA = a[ordenarPor];
-      const valorB = b[ordenarPor];
-      
-      if (valorA == null) return direccionOrden === 'asc' ? 1 : -1;
-      if (valorB == null) return direccionOrden === 'asc' ? -1 : 1;
-      
-      return direccionOrden === 'asc'
-        ? valorA.localeCompare(valorB)
-        : valorB.localeCompare(valorA);
-    });
-  }, [resultados, ordenarPor, direccionOrden]);
-
-  if (tablaMinimizada) {
-    return (
-      <div 
-        className="bg-pink-200 p-3 text-pink-800 cursor-pointer rounded-lg shadow-md hover:bg-pink-300 transition-colors duration-300 text-center font-semibold"
-        onClick={toggleTablaMinimizada}
-      >
-        Mostrar Detalle de Afiliados
-      </div>
-    );
-  }
 
   return (
-    <div className="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-pink-100">
+    <div
+      className={
+        "relative bg-gradient-to-br from-cyan-600/80 via-cyan-700/70 to-cyan-800/90 overflow-x-auto shadow-md sm:rounded-lg border border-cyan-800"
+      }
+    >
       <Tooltip id="my-tooltip" />
-      <div className="bg-gradient-to-r from-pink-400 to-pink-600 p-4 flex justify-between items-center">
-        <h2
-          data-tooltip-id="my-tooltip"
-          data-tooltip-content="Información de afiliados de AMUPROBA EVOL"
-          className="text-xl font-bold text-white tracking-wider"
-        >
-          ESTADO DE SOCIO AMUPROBA EVOL
-        </h2>
-        <button 
-          onClick={toggleTablaMinimizada} 
-          className="bg-white/20 text-white px-3 py-1 rounded-md hover:bg-white/30 transition"
-        >
-          Minimizar
-        </button>
-      </div>
-      
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-pink-50 border-b-2 border-pink-200">
-            <tr>
-              {[
-                { key: 'Nombre', label: 'Nombre' },
-                { key: 'Apellido', label: 'Apellido' },
-                { key: 'NumeroDeDoc', label: 'DNI' },
-                { key: 'NumSoc', label: 'N° Socio' },
-                { key: 'Categor', label: 'Categoria' },
-                { key: 'Estad', label: 'Estado' },
-                { key: 'Depen', label: 'Dependencia' }
-              ].map(({ key, label }) => (
-                <th 
-                  key={key} 
-                  className="px-4 py-3 text-left text-pink-700 font-semibold uppercase tracking-wider cursor-pointer hover:bg-pink-100"
-                  onClick={() => handleOrdenar(key)}
-                >
-                  {label}
-                  {ordenarPor === key && (
-                    <span className="ml-2 text-pink-500">
-                      {direccionOrden === 'asc' ? '▲' : '▼'}
-                    </span>
-                  )}
-                </th>
-              ))}
+      <h2
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Este contenedor muestra la informacion del afiliado de ADM EVOL"
+        data-tooltip-position-strategy="fixed"
+        className="p-2 text-lg font-semibold text-center text-neutral-100 Shadow ml-4"
+      >
+        AMUPROBA EVOL
+      </h2>
+      <div className="relative overflow-x-auto shadow-md">
+        <table className="w-full text-sm text-left text-slate-700 shadow-md">
+          <thead className="text-sm text-neutral-100 uppercase border-t border-cyan-900 bg-gradient-to-br from-cyan-800/90 via-cyan-700/80 to-cyan-700/90 Shadow-sm shadow-md">
+            <tr className="">
+              <th scope="col" className="px-2 py-2 ">
+                Nombre
+              </th>
+              <th scope="col" className="px-2 py-2">
+                Apellido
+              </th>
+              <th scope="col" className="px-2 py-2">
+                DNI
+              </th>
+              <th scope="col" className="px-2 py-2">
+                N° Socio
+              </th>
+              <th scope="col" className="px-2 py-2">
+                Categoria
+              </th>
+              <th scope="col" className="px-2 py-2">
+                Estado
+              </th>
+              <th scope="col" className="px-2 py-2">
+                Dependencia
+              </th>
             </tr>
           </thead>
           <tbody>
-            {(!resultadosOrdenados || resultadosOrdenados.length === 0) && (
+            {resultados && resultados.length === 0 && (
               <tr>
                 <td
                   colSpan="7"
-                  className="px-4 py-3 bg-pink-50 text-center text-pink-800 font-medium"
+                  className="px-1 py-1 bg-gray-200 border-b  text-sm text-center font-semibold shadow-md"
                 >
                   El cliente no tiene registro de ser afiliado de AMUPROBA
                 </td>
               </tr>
             )}
-            {resultadosOrdenados && resultadosOrdenados.map((resultado, index) => (
-              <tr
-                key={index}
-                className={`${
-                  index % 2 === 0 ? "bg-white" : "bg-pink-50/50"
-                } hover:bg-pink-100 transition-colors`}
-              >
-                {[
-                  resultado.Nombre,
-                  resultado.Apellido,
-                  resultado.NumeroDeDoc,
-                  resultado.NumSoc,
-                  resultado.Categor,
-                  resultado.Estad,
-                  resultado.Depen
-                ].map((valor, colIndex) => (
-                  <td 
-                    key={colIndex} 
-                    className="px-4 py-3 text-gray-800 font-medium"
-                  >
-                    {valor}
+            {resultados &&
+              resultados.map((resultado, index) => (
+                <tr
+                  key={index}
+                  className={`${
+                    index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"
+                  } border text-left border-slate-400 uppercase htransition duration-300 ease-in-out hover:bg-orange-300	`}
+                >
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.Nombre}
                   </td>
-                ))}
-              </tr>
-            ))}
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.Apellido}
+                  </td>
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.NumeroDeDoc}
+                  </td>
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.NumSoc}
+                  </td>
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.Categor}
+                  </td>
+                  <td
+                    scope="row"
+                    className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {resultado.Estad}
+                  </td>
+                  <td scope="row" className="px-2 py-1">
+                    {resultado.Depen}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

@@ -1,0 +1,37 @@
+* [33m1fa9c0d0[m[33m ([m[1;36mHEAD -> [m[1;32manalizerv6[m[33m)[m Actualizacion de Marzo
+[31m|[m * [33mf98dec20[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m Merge de analizerv6 en main
+[31m|[m[31m/[m  
+* [33m88259209[m Ultima actualizacion
+* [33md46e8de5[m Actualizacion Colocacion
+* [33m4c12a557[m Actualizacion OCTUBRE, colocacion y contenedores
+* [33m283c6d9d[m Actualizacion de SEPTIEMBRE
+* [33m8167a9c8[m Actualizando Colocacion
+* [33mc8e39603[m Mas fixed
+* [33m7a0e12d2[m Error solucionado
+* [33m9e28db9d[m Actualziacion de page vendedores
+* [33m7dfd3910[m Actualizacion analizer vendedores MAYO
+* [33me90e1124[m Modificacion de colocacion
+* [33m344c460b[m Cambio de fechas en colocacion
+* [33m799e9456[m Agrega nuevas características
+* [33ma1a3bb4d[m Solucionado
+* [33m52f97831[m Ultima actualizacion
+* [33m542f672e[m Agrego colocacion
+* [33m421481fa[m cambio periodos filtro
+* [33me8d9d8da[m Actualizcion errores
+* [33m73e06afc[m TODOS LOS CAMBIOS
+* [33mf459a523[m Resumenes actualizados
+* [33m8b224d16[m Añadir todos los archivos y carpetas
+* [33m2c078e6b[m Eliminar todos los archivos y carpetas
+* [33m90a80ce2[m first commit
+* [33m85054d65[m[33m ([m[1;31morigin/master[m[33m)[m ASDASD
+* [33m0975c896[m ASd
+*   [33m8c314ce8[m Merge branch 'master' of https://github.com/leutdh/Analiz
+[34m|[m[35m\[m  
+[34m|[m * [33m1e43df0e[m Save
+[34m|[m * [33mad9ccf38[m Revertir la eliminación de archivos del índice
+[34m|[m * [33m0d058a4b[m Actualizado .gitignore
+[34m|[m * [33me074a936[m Update .env
+[34m|[m * [33mf35b3511[m Update .env
+[34m|[m * [33mc0acd783[m Proyecto Z
+* [33m3b10350b[m Excluyendo next-swc.win32-x64-msvc.node del control de versiones
+* [33mab3e236f[m Commit inicial

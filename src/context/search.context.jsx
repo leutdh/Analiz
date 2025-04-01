@@ -61,17 +61,27 @@ export function useSearchProv() {
     try {
       setLoading(true);
 
-      // Realiza la búsqueda en ambas API y espera a que se completen ambas
-      const [datosEvol, datosSoc, datosRes, datosPrest, datosCargos] =
-        await Promise.all([
-          buscarDatos(dni),
-          buscarDatosSoc(dni),
-          buscarDatosRes(dni),
-          buscarDatosPrest(dni),
-          buscarDatosCargos(dni),
-        ]);
+      // Modifica el array de promesas para incluir solo las APIs activas
+      const promesas = [
+        buscarDatos(dni),
+        buscarDatosSoc(dni),
+        // Las siguientes líneas están comentadas, así que no las incluimos en el Promise.all
+        // buscarDatosRes(dni),
+        // buscarDatosPrest(dni),
+        // buscarDatosCargos(dni),
+      ];
 
-      // Combina los resultados de ambas búsquedas
+      // Realiza la búsqueda solo en las APIs activas
+      const resultadosAPI = await Promise.all(promesas);
+      
+      const datosEvol = resultadosAPI[0];
+      const datosSoc = resultadosAPI[1];
+      // No necesitamos estas variables ya que sus APIs están comentadas
+      // const datosRes = resultadosAPI[2];
+      // const datosPrest = resultadosAPI[3];
+      // const datosCargos = resultadosAPI[4];
+
+      // Combina los resultados de las búsquedas activas
       const resultadosCombinados = {
         admEvol: datosEvol.AdmEvol || [],
         simaEvol: datosEvol.SimaEvol || [],
@@ -81,21 +91,23 @@ export function useSearchProv() {
         AmupSoc: datosSoc.AmupSoc || [],
         AdmSoc: datosSoc.AdmSoc || [],
         FacSoc: datosSoc.FacSoc || [],
-        ResumenSima: datosRes.ResumenSima || [],
-        ResumenAdm: datosRes.ResumenAdm || [],
-        SimaPres: datosPrest.SimaPres || [],
-        AmupPres: datosPrest.AmupPres || [],
-        AdmPres: datosPrest.AdmPres || [],
-        FacPres: datosPrest.FacPres || [],
-        SimaCarg: datosCargos.SimaCarg || [],
-        AdmCarg: datosCargos.AdmCarg || [],
-        FacCarg: datosCargos.FacCarg || [],
-        AmupCarg: datosCargos.AmupCarg || [],
+        // Mantenemos estos campos vacíos ya que sus APIs están comentadas
+        ResumenSima: [],
+        ResumenAdm: [],
+        SimaPres: [],
+        AmupPres: [],
+        AdmPres: [],
+        FacPres: [],
+        SimaCarg: [],
+        AdmCarg: [],
+        FacCarg: [],
+        AmupCarg: [],
         Colocacion: datosEvol.Colocacion || [],
       };
 
       // Actualiza el estado con los resultados combinados
       setResultados(resultadosCombinados);
+      
     } catch (error) {
       console.error("Error al buscar datos:", error);
     } finally {
