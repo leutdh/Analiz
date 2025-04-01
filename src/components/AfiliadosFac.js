@@ -20,9 +20,9 @@ function AfiliadosFac({ resultados }) {
       data-tooltip-id="my-tooltip"
       data-tooltip-content="Este contenedor muestra la informacion del afiliado de FACILITAR EVOL"
       data-tooltip-position-strategy="fixed"
-      className="p-2 text-lg font-semibold text-left text-neutral-100 Shadow ml-4"
+      className="p-2 text-lg font-semibold text-center text-neutral-100 Shadow ml-4"
     >
-      ESTADO DE SOCIO FACILITAR EVOL
+      FACILITAR EVOL
     </h2>
     <div className="relative overflow-x-auto shadow-md">
       <table className="w-full text-sm text-left text-slate-700 shadow-md">
