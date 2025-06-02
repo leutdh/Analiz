@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import { useDni } from "@/context/dni.context";
 import { useSearch } from "@/context/search.context";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { FaSearch, FaBars, FaTimes, FaUserAlt } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import Image from "next/image";
 import logo from "public/logo.png";
 
 const NavbarComponent = () => {
+  const router = useRouter();
   const [searchValue, setSearchValue] = useState(""); // Estado para el input de búsqueda
   const { setDni } = useDni(); // Guardar el valor del DNI
   const { handleBuscar, loading } = useSearch(); // Acción de búsqueda
@@ -55,11 +58,10 @@ const NavbarComponent = () => {
                 key={item.name}
                 href={item.href}
                 onClick={() => setiSelected(item.name)}
-                className={`text-sm font-medium hover:text-pink-500 transition ${
-                  isSelected === item.name
+                className={`text-sm font-medium hover:text-pink-500 transition ${isSelected === item.name
                     ? "text-pink-600 border-b-2 border-pink-600"
                     : "text-gray-700"
-                }`}
+                  }`}
               >
                 {item.name}
               </Link>
@@ -88,9 +90,26 @@ const NavbarComponent = () => {
             <BiLogOut
               size={24}
               className="cursor-pointer text-gray-600 hover:text-pink-500 transition"
-              onClick={() => {
-                localStorage.removeItem("token");
-                window.location.href = "/";
+              onClick={async () => {
+                try {
+                  const response = await fetch("/api/logout", { 
+                    method: "GET",
+                    credentials: 'include' // Asegura que se envíen las cookies
+                  });
+                  
+                  if (response.ok) {
+                    // Limpiar el estado local si es necesario
+                    localStorage.removeItem('token');
+                    
+                    // Redirigir usando el router de Next.js
+                    router.push('/');
+                    router.refresh(); // Forzar recarga del layout
+                  }
+                } catch (err) {
+                  console.error("Error al hacer logout:", err);
+                  // Intentar redirigir de todas formas
+                  router.push('/');
+                }
               }}
             />
 
@@ -137,7 +156,7 @@ const NavbarComponent = () => {
             </div>
             <div className="flex flex-col space-y-1">
               {[
-              {name:"COLOCACION",href:"/inicio/resultados/colocacion"},
+                { name: "COLOCACION", href: "/inicio/resultados/colocacion" },
                 { name: "ADM", href: "/inicio/resultados/adm" },
                 { name: "SIMA", href: "/inicio/resultados/sima" },
                 { name: "AMUPROBA", href: "/inicio/resultados/amuproba" },
@@ -147,9 +166,8 @@ const NavbarComponent = () => {
                   key={item.name}
                   href={item.href}
                   onClick={() => setiSelected(item.name)}
-                  className={`block text-sm text-center text-gray-700 hover:text-pink-500 py-1 ${
-                    isSelected === item.name ? "font-medium text-pink-600" : ""
-                  }`}
+                  className={`block text-sm text-center text-gray-700 hover:text-pink-500 py-1 ${isSelected === item.name ? "font-medium text-pink-600" : ""
+                    }`}
                 >
                   {item.name}
                 </Link>

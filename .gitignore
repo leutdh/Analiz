@@ -6,7 +6,8 @@
 .pnp.js
 .yarn/install-state.gz
 .env
-LEEMELCTM.txt
+
+LEEMELCTM.TXT
 # testing
 /coverage
 

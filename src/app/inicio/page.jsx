@@ -1,115 +1,151 @@
 "use client";
-import { useState, useEffect } from "react";
-import { AuthApi } from "@/config/endpoints";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth.context";
-import { jwtDecode } from "jwt-decode";
-import Image from "next/image";
-import title from "public/title.png";
-
-export default function Login() {
-  const [token, setToken] = useState("");
+import { useUsuarioStore } from "@/store/useStore";
+const LoginForm = () => {
   const router = useRouter();
-  const { user, setUser, setLoading } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { setNombreVendedor } = useUsuarioStore();
 
-  const [values, setValues] = useState({
-    username: "",
-    password: "",
-  });
-
-  const handleInputChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Activar estado de carga
+    setError(""); // Limpiar errores previos
 
-    const { username, password } = values;
-
-    AuthApi.login({ username, password })
-      .then((response) => {
-        const { token } = response.data;
-        localStorage.setItem("token", token);
-        const decodedToken = jwtDecode(token);
-        setLoading(false);
-
-        // Redirige según el rol
-        const role = decodedToken.role;
-        if (role === "vendedor") {
-          router.push("/inicio/vendedor");
-        } else if (role === "administrativo") {
-          router.push("/inicio/resultados");
-        } else {
-          console.error("Rol no reconocido:", role);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to login:", error);
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
       });
-  };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const decodedToken = jwtDecode(token);
-
-      if (decodedToken.role === "administrativo") {
-        console.log(user);
-        setToken(token);
-        router.push("/inicio/resultados/adm");
-      } else if (decodedToken.role === "vendedor") {
-        router.push("/inicio/vendedor");
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.status}`);
       }
+
+      const resJson = await response.json();
+
+      if (!resJson.success) {
+        throw new Error(resJson.message || "Error en el inicio de sesión");
+      }
+
+      console.log("Respuesta completa del servidor:", resJson);
+      // Primero establecemos el nombre del vendedor en el store
+      console.log("Nombre del vendedor recibido:", resJson.nombre);
+      setNombreVendedor(resJson.nombre || 'Usuario');
+      // Luego redirigimos a la página de resultados
+      router.push("/inicio/resultados/adm");
+
+    } catch (error) {
+      console.error("Error en handleSubmit:", error);
+      setError(error.message || "Ocurrió un error, intenta de nuevo.");
+    } finally {
+      setLoading(false); // Desactivar estado de carga
     }
-  }, [token]);
+  };
 
   return (
-    <div className="flex bg-gray-100 h-screen">
-      <div className="m-auto bg-white border border-cyan-600 rounded-lg shadow-2xl p-8 md:w-1/3">
-        <div className="flex justify-center">
-          <Image src={title} alt="logo" />
-        </div>
-        <h2 className="text-3xl font-bold text-center text-cyan-600 mb-4">
-          Iniciar Sesión
-        </h2>
-
-        <form>
-          <div className="mb-4">
-            <input
-              id="username"
-              name="username"
-              type="text"
-              value={values.username}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 text-center border border-cyan-500 rounded-lg bg-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-700 text-gray-700"
-              placeholder="Usuario"
-            />
-          </div>
-
-          <div className="mb-6">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={values.password}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 text-center border border-cyan-500 rounded-lg bg-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-700 text-gray-700"
-              placeholder="Contraseña"
-            />
-          </div>
-
-          <button
-            className="block w-full bg-cyan-500 hover:bg-cyan-700 text-white py-2 rounded-lg transition duration-200"
-            onClick={handleSubmit}
-          >
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Iniciar Sesión
-          </button>
+          </h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm space-y-4">
+            <div>
+              <label htmlFor="username" className="sr-only">
+                Usuario
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Usuario"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 my-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
+                loading
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              }`}
+            >
+              {loading ? (
+                <span className="flex items-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Iniciando sesión...
+                </span>
+              ) : (
+                "Iniciar Sesión"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
-}
+};
+
+export default LoginForm;

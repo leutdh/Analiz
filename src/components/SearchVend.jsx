@@ -59,13 +59,16 @@ const SearchVend = () => {
             <div className="flex items-center">
               <Tooltip id="logout-tooltip" />
               <BiLogOut
-                size={28}
-                data-tooltip-id="logout-tooltip"
-                data-tooltip-content="Cerrar sesión"
-                className="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-300"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  window.location.href = "/";
+                size={24}
+                className="cursor-pointer text-gray-600 hover:text-pink-500 transition"
+                onClick={async () => {
+                  try {
+                    await fetch("/api/logout", { method: "GET" });
+                  } catch (err) {
+                    console.error("Error al hacer logout:", err);
+                  } finally {
+                    window.location.href = "/";
+                  }
                 }}
               />
             </div>

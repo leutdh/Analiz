@@ -1,31 +1,12 @@
 "use client";
 import AfiliadosFac from "@/components/AfiliadosFac"
-import PrestFac from "@/components/PrestFac";
 import Colocacion from "@/components/Colocacion";
 import ResultadosFacEvol from "@/components/ResultadosFacEvol";
-import CargFac from "@/components/CargFac";
 import { useSearch } from "@/context/search.context";
-import { useAuth } from "@/context/auth.context";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Cargando from "@/components/Cargando";
 
 export default function PagFac() {
   const { resultados, loading } = useSearch();
-  const { user } = useAuth();
-  const router = useRouter();
-  const [isEffectComplete, setIsEffectComplete] = useState(false);
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      router.push("/inicio");
-    } else {
-      setIsEffectComplete(true);
-    }
-  }, [token]);
 
   if(loading) return <Cargando />
 

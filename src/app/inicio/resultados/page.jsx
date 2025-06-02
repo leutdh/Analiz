@@ -7,7 +7,7 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/inicio');
+    router.push('/inicio/resultados/adm');
   }, []);
 
   return (

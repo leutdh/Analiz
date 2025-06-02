@@ -1,6 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import SearchVend from "@/components/SearchVend";
 import AdmContent from "@/components/AdmContent";
 import SimaContent from "@/components/SimaContent";
@@ -9,15 +7,6 @@ import AmupContent from "@/components/AmupContent";
 import Colocacion from "@/components/Colocacion";
 
 export default function Vendedor() {
-  const router = useRouter();
-  const [token, setToken] = useState("");
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      router.push("/inicio");
-    }
-  }, [token]);
 
   return (
     <>
