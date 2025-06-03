@@ -36,9 +36,6 @@ export default function FormularioSima({ grillaSima }) {
   });
 
   const [loading, setLoading] = useState(false);
-  const [provincias, setProvincias] = useState([]);
-  const [localidades, setLocalidades] = useState([]);
-  const [loadingLocalidades, setLoadingLocalidades] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [Sima, setSima] = useState(null);
   const [nombreSima, setNombreSima] = useState('');
@@ -153,56 +150,56 @@ export default function FormularioSima({ grillaSima }) {
 
   ];
   // Cargar provincias al montar el componente
-  useEffect(() => {
-    const cargarProvincias = async () => {
-      try {
-        const response = await fetch('https://apis.datos.gob.ar/georef/api/provincias');
-        const data = await response.json();
-        const provinciasData = data.provincias.map(prov => ({
-          value: prov.id,
-          label: prov.nombre
-        }));
-        setProvincias(provinciasData);
-      } catch (error) {
-        console.error('Error al cargar las provincias:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const cargarProvincias = async () => {
+  //     try {
+  //       const response = await fetch('https://apis.datos.gob.ar/georef/api/provincias');
+  //       const data = await response.json();
+  //       const provinciasData = data.provincias.map(prov => ({
+  //         value: prov.id,
+  //         label: prov.nombre
+  //       }));
+  //       setProvincias(provinciasData);
+  //     } catch (error) {
+  //       console.error('Error al cargar las provincias:', error);
+  //     }
+  //   };
 
-    cargarProvincias();
-  }, []);
+  //   cargarProvincias();
+  // }, []);
 
   // Cargar localidades cuando se selecciona una provincia
-  const handleProvinciaChange = async (e) => {
-    const provinciaId = e.target.value;
-    const provinciaNombre = e.target.options[e.target.selectedIndex].text;
-    setFormData(prev => ({
-      ...prev,
-      provincia: provinciaId, // Mantenemos el ID para el select
-      provinciaNombre: provinciaNombre, // Guardamos el nombre para enviar
-      localidad: '',
-      localidadNombre: ''
-    }));
+  // const handleProvinciaChange = async (e) => {
+  //   const provinciaId = e.target.value;
+  //   const provinciaNombre = e.target.options[e.target.selectedIndex].text;
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     provincia: provinciaId, // Mantenemos el ID para el select
+  //     provinciaNombre: provinciaNombre, // Guardamos el nombre para enviar
+  //     localidad: '',
+  //     localidadNombre: ''
+  //   }));
 
-    if (!provinciaId) {
-      setLocalidades([]);
-      return;
-    }
+  //   if (!provinciaId) {
+  //     setLocalidades([]);
+  //     return;
+  //   }
 
-    setLoadingLocalidades(true);
-    try {
-      const response = await fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${provinciaId}&max=1000`);
-      const data = await response.json();
-      const localidadesData = data.municipios.map(loc => ({
-        value: loc.id,
-        label: loc.nombre
-      }));
-      setLocalidades(localidadesData);
-    } catch (error) {
-      console.error('Error al cargar las localidades:', error);
-    } finally {
-      setLoadingLocalidades(false);
-    }
-  };
+  //   setLoadingLocalidades(true);
+  //   try {
+  //     const response = await fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${provinciaId}&max=1000`);
+  //     const data = await response.json();
+  //     const localidadesData = data.municipios.map(loc => ({
+  //       value: loc.id,
+  //       label: loc.nombre
+  //     }));
+  //     setLocalidades(localidadesData);
+  //   } catch (error) {
+  //     console.error('Error al cargar las localidades:', error);
+  //   } finally {
+  //     setLoadingLocalidades(false);
+  //   }
+  // };
 
 
   const parseNumber = (str) => {
@@ -286,9 +283,7 @@ export default function FormularioSima({ grillaSima }) {
     // Crear un objeto con los datos a enviar
     const datosAEnviar = {
       ...formData,
-      // Mantenemos todos los datos originales pero reemplazamos los IDs por los nombres
-      provincia: formData.provinciaNombre, // Enviamos el nombre en lugar del ID
-      localidad: formData.localidadNombre   // Enviamos el nombre en lugar del ID
+      
     };
 
     try {
