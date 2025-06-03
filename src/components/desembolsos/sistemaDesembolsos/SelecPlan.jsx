@@ -17,14 +17,14 @@ export default function SelecPlan() {
         { 
             id: 2, 
             value: 'ADM ACCEDO', 
-            label: 'ADM ACCEDO',
-            description: 'Plan de desembolso para clientes de ADM ACCEDO'
+            label: 'ADM PROPIO',
+            description: 'Plan de desembolso para clientes de ADM'
         },
         { 
             id: 3, 
             value: 'SIMA ACCEDO', 
-            label: 'SIMA ACCEDO',
-            description: 'Plan de desembolso para clientes de SIMA ACCEDO'
+            label: 'SIMA PROPIO',
+            description: 'Plan de desembolso para clientes de SIMA'
         },
     ];
 

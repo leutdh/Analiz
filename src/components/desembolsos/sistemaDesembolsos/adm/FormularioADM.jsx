@@ -22,8 +22,8 @@ export default function FormularioADM({ grillaAdm }) {
     localidad: "",
     localidadNombre: "",
     codigoPostal: "",
-    provincia: "",
-    provinciaNombre: "",
+    provincia: "Buenos Aires",
+    provinciaNombre: "Buenos Aires",
     cbu: "",
     fechaNacimiento: "",
     email: "",
@@ -409,17 +409,13 @@ export default function FormularioADM({ grillaAdm }) {
                     onChange={handleInputChange}
                     required
                   />
-                  <SelectField
+                  <FormField
                     label="Provincia"
                     name="provincia"
-                    value={formData.provincia || ''}
-                    onChange={handleProvinciaChange}
-                    options={[
-                      { value: '', label: 'Seleccione una provincia' },
-                      ...provincias
-                    ]}
-                    required
+                    value="Buenos Aires"
+                    disabled
                   />
+
                 </div>
                 <div className="space-y-6">
 
@@ -431,26 +427,14 @@ export default function FormularioADM({ grillaAdm }) {
                     onChange={handleInputChange}
                     required
                   />
-                  <SelectField
+                  <FormField
                     label="Localidad"
                     name="localidad"
-                    value={formData.localidad || ''}
-                    onChange={(e) => {
-                      const localidadId = e.target.value;
-                      const localidadNombre = e.target.options[e.target.selectedIndex].text;
-                      setFormData(prev => ({
-                        ...prev,
-                        localidad: localidadId,
-                        localidadNombre: localidadId ? localidadNombre : ''
-                      }));
-                    }}
-                    options={[
-                      { value: '', label: loadingLocalidades ? 'Cargando...' : 'Seleccione una localidad' },
-                      ...localidades
-                    ]}
-                    disabled={!formData.provincia || loadingLocalidades}
+                    value={formData.localidad}
+                    onChange={handleInputChange}
                     required
                   />
+
                 </div>
 
                 <div className="space-y-6">

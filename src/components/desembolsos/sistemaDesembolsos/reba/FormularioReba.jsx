@@ -30,8 +30,9 @@ export default function FormularioReba({ grillaReba }) {
     localidad: "",
     localidadNombre: "",
     codigoPostal: "",
-    provincia: "",
-    provinciaNombre: "",
+    provincia: "Buenos Aires",
+    provinciaNombre: "Buenos Aires",
+
     cbu: "",
     fechaNacimiento: "",
     email: "",
@@ -386,17 +387,13 @@ export default function FormularioReba({ grillaReba }) {
                     onChange={handleInputChange}
                     required
                   />
-                  <SelectField
+                  <FormField
                     label="Provincia"
                     name="provincia"
-                    value={formData.provincia || ''}
-                    onChange={handleProvinciaChange}
-                    options={[
-                      { value: '', label: 'Seleccione una provincia' },
-                      ...provincias
-                    ]}
-                    required
+                    value="Buenos Aires"
+                    disabled
                   />
+
                 </div>
                 <div className="space-y-6">
 
@@ -408,26 +405,14 @@ export default function FormularioReba({ grillaReba }) {
                     onChange={handleInputChange}
                     required
                   />
-                  <SelectField
+                  <FormField
                     label="Localidad"
                     name="localidad"
-                    value={formData.localidad || ''}
-                    onChange={(e) => {
-                      const localidadId = e.target.value;
-                      const localidadNombre = e.target.options[e.target.selectedIndex].text;
-                      setFormData(prev => ({
-                        ...prev,
-                        localidad: localidadId,
-                        localidadNombre: localidadId ? localidadNombre : ''
-                      }));
-                    }}
-                    options={[
-                      { value: '', label: loadingLocalidades ? 'Cargando...' : 'Seleccione una localidad' },
-                      ...localidades
-                    ]}
-                    disabled={!formData.provincia || loadingLocalidades}
+                    value={formData.localidad}
+                    onChange={handleInputChange}
                     required
                   />
+
                 </div>
 
                 <div className="space-y-6">
@@ -671,29 +656,29 @@ export default function FormularioReba({ grillaReba }) {
       </form>
       {/* Enlace de descarga del archivo generado */}
       {Reba && (
-         <div className="mt-10 flex justify-center mb-10">
-         <a
-           href={URL.createObjectURL(Reba)}
-           download={nombreReba || "archivo.docx"}
-           className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-100 via-gray-300 to-gray-300 text-black font-bold text-sm rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition transform duration-300 ease-in-out"
-         >
-           <svg
-             xmlns="http://www.w3.org/2000/svg"
-             className="w-5 h-5 group-hover:animate-bounce"
-             fill="none"
-             viewBox="0 0 24 24"
-             stroke="currentColor"
-             strokeWidth={2}
-           >
-             <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M7 10l5 5m0 0l5-5m-5 5V4"
-             />
-           </svg>
-           Descargar Legajo Reba
-         </a>
-       </div>
+        <div className="mt-10 flex justify-center mb-10">
+          <a
+            href={URL.createObjectURL(Reba)}
+            download={nombreReba || "archivo.docx"}
+            className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-100 via-gray-300 to-gray-300 text-black font-bold text-sm rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition transform duration-300 ease-in-out"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 group-hover:animate-bounce"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M7 10l5 5m0 0l5-5m-5 5V4"
+              />
+            </svg>
+            Descargar Legajo Reba
+          </a>
+        </div>
       )}
 
     </div>
