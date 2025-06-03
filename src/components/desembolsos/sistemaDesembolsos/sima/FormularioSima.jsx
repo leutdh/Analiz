@@ -3,11 +3,10 @@ import React, { useState, useEffect } from "react";
 import FormField from "../../reutilizables/FormField";
 import SelectField from "../../reutilizables/SelectField";
 import Button from "../../reutilizables/Button";
-import { useUsuarioStore } from "@/store/useStore";
+
 
 export default function FormularioSima({ grillaSima }) {
 
-  const nombreVendedor = useUsuarioStore(state => state.nombreVendedor);
 
   const [formData, setFormData] = useState({
     cuit: "",
@@ -45,14 +44,30 @@ export default function FormularioSima({ grillaSima }) {
   const [nombreSima, setNombreSima] = useState('');
 
   useEffect(() => {
-    // Set the vendedor field with the value from the store
-    if (nombreVendedor && !formData.vendedor) { // Only set if nombreVendedor exists and formData.vendedor is not already set
-      setFormData(prev => ({
-        ...prev,
-        vendedor: nombreVendedor
-      }));
-    }
-  }, [nombreVendedor, formData.vendedor]); // Re-run if nombreVendedor changes or if vendedor is somehow cleared
+    const fetchUsuario = async () => {
+      const res = await fetch("/api/user");
+      if (res.ok) {
+        const data = await res.json();
+        setFormData(prev => ({
+          ...prev,
+          vendedor: data.nombre
+        }));
+        
+      }
+    };
+    fetchUsuario();
+  }, []);
+  
+
+  // useEffect(() => {
+  //   // Set the vendedor field with the value from the store
+  //   if (nombreVendedor && !formData.vendedor) { // Only set if nombreVendedor exists and formData.vendedor is not already set
+  //     setFormData(prev => ({
+  //       ...prev,
+  //       vendedor: nombreVendedor
+  //     }));
+  //   }
+  // }, [nombreVendedor, formData.vendedor]); // Re-run if nombreVendedor changes or if vendedor is somehow cleared
 
 
 

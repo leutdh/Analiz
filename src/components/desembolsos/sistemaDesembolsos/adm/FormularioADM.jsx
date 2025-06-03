@@ -3,11 +3,8 @@ import React, { useState, useEffect } from "react";
 import FormField from "../../reutilizables/FormField";
 import SelectField from "../../reutilizables/SelectField";
 import Button from "../../reutilizables/Button";
-import { useUsuarioStore } from "@/store/useStore";
 
 export default function FormularioADM({ grillaAdm }) {
-
-  const nombreVendedor = useUsuarioStore(state => state.nombreVendedor);
 
   const [formData, setFormData] = useState({
     cuit: "",
@@ -44,16 +41,20 @@ export default function FormularioADM({ grillaAdm }) {
   const [Adm, setAdm] = useState(null);
   const [nombreAdm, setNombreAdm] = useState('');
 
-  useEffect(() => {
-    // Set the vendedor field with the value from the store
-    if (nombreVendedor && !formData.vendedor) { // Only set if nombreVendedor exists and formData.vendedor is not already set
-      setFormData(prev => ({
-        ...prev,
-        vendedor: nombreVendedor
-      }));
-    }
-  }, [nombreVendedor, formData.vendedor]); // Re-run if nombreVendedor changes or if vendedor is somehow cleared
-
+    useEffect(() => {
+      const fetchUsuario = async () => {
+        const res = await fetch("/api/user");
+        if (res.ok) {
+          const data = await res.json();
+          setFormData(prev => ({
+            ...prev,
+            vendedor: data.nombre
+          }));
+          
+        }
+      };
+      fetchUsuario();
+    }, []);
 
 
   useEffect(() => {
