@@ -49,12 +49,12 @@ export default function FormularioSima({ grillaSima }) {
           ...prev,
           vendedor: data.nombre
         }));
-        
+
       }
     };
     fetchUsuario();
   }, []);
-  
+
 
   // useEffect(() => {
   //   // Set the vendedor field with the value from the store
@@ -280,10 +280,41 @@ export default function FormularioSima({ grillaSima }) {
     e.preventDefault();
     setLoading(true);
 
+    // Validación de campos vacíos
+    const camposRequeridos = [
+      "cuit",
+      "nombreApellido",
+      "dni",
+      "legajo",
+      "vendedor",
+      "dependencia",
+      "monto",
+      "cantCuotas",
+      "domicilio",
+      "localidad",
+      "codigoPostal",
+      "provincia",
+      "cbu",
+      "fechaNacimiento",
+      "email",
+      "telefono",
+      "referencia1",
+      "referencia2",
+      "telRef1",
+      "telRef2",
+    ];
+
+    const camposVacios = camposRequeridos.filter(campo => !formData[campo]);
+
+    if (camposVacios.length > 0) {
+      alert(`Por favor complete todos los campos obligatorios:\n- ${camposVacios.join('\n- ')}`);
+      return;
+    }
+
     // Crear un objeto con los datos a enviar
     const datosAEnviar = {
       ...formData,
-      
+
     };
 
     try {

@@ -6,7 +6,7 @@ import Button from "../../reutilizables/Button";
 
 
 export default function FormularioReba({ grillaReba }) {
-  
+
 
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -53,20 +53,20 @@ export default function FormularioReba({ grillaReba }) {
     }
   }, [montoCuota]);
 
-    useEffect(() => {
-      const fetchUsuario = async () => {
-        const res = await fetch("/api/user");
-        if (res.ok) {
-          const data = await res.json();
-          setFormData(prev => ({
-            ...prev,
-            vendedor: data.nombre
-          }));
-          
-        }
-      };
-      fetchUsuario();
-    }, []);
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      const res = await fetch("/api/user");
+      if (res.ok) {
+        const data = await res.json();
+        setFormData(prev => ({
+          ...prev,
+          vendedor: data.nombre
+        }));
+
+      }
+    };
+    fetchUsuario();
+  }, []);
 
 
   useEffect(() => {
@@ -245,12 +245,43 @@ export default function FormularioReba({ grillaReba }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
+    // Validación de campos vacíos
+    const camposRequeridos = [
+      "cuit",
+      "nombreApellido",
+      "dni",
+      "legajo",
+      "vendedor",
+      "dependencia",
+      "monto",
+      "cantCuotas",
+      "domicilio",
+      "localidad",
+      "codigoPostal",
+      "provincia",
+      "cbu",
+      "fechaNacimiento",
+      "email",
+      "telefono",
+      "nacionalidad",
+      "sexo",
+      "fechaIngreso",
+      "ingresosUltimoMes",
+    ];
+
+    const camposVacios = camposRequeridos.filter(campo => !formData[campo]);
+
+    if (camposVacios.length > 0) {
+      alert(`Por favor complete todos los campos obligatorios:\n- ${camposVacios.join('\n- ')}`);
+      return;
+    }
+
+    setLoading(true);
     // Crear un objeto con los datos a enviar
     const datosAEnviar = {
       ...formData,
-      
+
       montoCuota: montoCuota,
     };
 

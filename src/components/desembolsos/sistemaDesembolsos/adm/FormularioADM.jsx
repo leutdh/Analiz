@@ -264,41 +264,64 @@ export default function FormularioADM({ grillaAdm }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    // Validación de campos vacíos
+    const camposRequeridos = [
+      "cuit",
+      "nombreApellido",
+      "dni",
+      "legajo",
+      "vendedor",
+      "dependencia",
+      "monto",
+      "cantCuotas",
+      "domicilio",
+      "localidad",
+      "codigoPostal",
+      "provincia",
+      "cbu",
+      "fechaNacimiento",
+      "email",
+      "telefono",
+      "referencia1",
+      "referencia2",
+      "telRef1",
+      "telRef2",
+    ];
+  
+    const camposVacios = camposRequeridos.filter(campo => !formData[campo]);
+  
+    if (camposVacios.length > 0) {
+      alert(`Por favor complete todos los campos obligatorios:\n- ${camposVacios.join('\n- ')}`);
+      return;
+    }
+  
     setLoading(true);
-
-    // Crear un objeto con los datos a enviar
+  
     const datosAEnviar = {
       ...formData,
     };
-
+  
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/create/adm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosAEnviar)
       });
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos.');
-      }
-
-      // Obtener el nombre sugerido del archivo desde el header
+  
+      if (!response.ok) throw new Error('Error al enviar los datos.');
+  
       const disposition = response.headers.get('Content-Disposition');
       let filename = `legajoAdm-${formData.cuit}.docx`;
-      if (disposition && disposition.indexOf('filename=') !== -1) {
-        filename = disposition
-          .split('filename=')[1]
-          .replace(/["']/g, '')
-          .trim();
+      if (disposition?.includes('filename=')) {
+        filename = disposition.split('filename=')[1].replace(/["']/g, '').trim();
       }
-
-      // Descargar el archivo como blob
+  
       const blob = await response.blob();
-      // Guardar el archivo en el estado para mostrar el enlace de descarga
       setAdm(blob);
       setNombreAdm(filename);
-
+  
       alert('¡Solicitud enviada correctamente y legajo generado!');
-      // setFormData({ ... }); // Si quieres limpiar los campos
     } catch (error) {
       alert('Hubo un error al enviar la solicitud.');
       console.error(error);
@@ -306,6 +329,7 @@ export default function FormularioADM({ grillaAdm }) {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto">
