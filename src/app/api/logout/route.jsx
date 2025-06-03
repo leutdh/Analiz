@@ -6,11 +6,19 @@ export async function GET(req) {
         const cookies = req.headers.get("cookie") || "";
         
         // Crear la respuesta base
-        const response = new NextResponse();
+        const response = new NextResponse(
+            JSON.stringify({ success: true, message: "Sesión cerrada correctamente" }),
+            {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
         
         try {
             // Intentar hacer logout en el backend
-            const responseApi = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/usuarios/logout`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -18,19 +26,9 @@ export async function GET(req) {
                 },
                 credentials: 'include'
             });
-
-            // Obtener la respuesta JSON solo si la respuesta es exitosa
-            const resApiJson = responseApi.ok ? await responseApi.json() : null;
-            
-            // Configurar la respuesta con los datos del backend si existen
-            if (resApiJson) {
-                response.json(resApiJson);
-            } else {
-                response.json({ success: false, message: "Error en el servidor" });
-            }
         } catch (error) {
             console.error("Error durante el logout:", error);
-            response.json({ success: false, message: "Error durante el logout" });
+            // Continuamos con el proceso de limpieza local aun si falla el logout remoto
         }
         
         // Eliminar las cookies de autenticación
@@ -43,7 +41,6 @@ export async function GET(req) {
             sameSite: 'lax',
             secure: process.env.NODE_ENV === 'production'
         });
-        
         
         // Eliminar cualquier otra cookie relacionada con la sesión
         response.cookies.set({
