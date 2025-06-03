@@ -44,15 +44,6 @@ export async function GET(req) {
             secure: process.env.NODE_ENV === 'production'
         });
         
-        response.cookies.set({
-            name: 'refreshToken',
-            value: '',
-            path: '/',
-            expires: new Date(0),
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV === 'production'
-        });
         
         // Eliminar cualquier otra cookie relacionada con la sesión
         response.cookies.set({
@@ -77,7 +68,7 @@ export async function GET(req) {
         
         // Asegurarse de limpiar las cookies incluso en caso de error
         errorResponse.cookies.set('accessToken', '', { path: '/', expires: new Date(0) });
-        errorResponse.cookies.set('refreshToken', '', { path: '/', expires: new Date(0) });
+        
         
         return errorResponse;
     }

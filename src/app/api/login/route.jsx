@@ -19,16 +19,10 @@ export async function POST(req) {
   if (resJson.success === true) {
     await cookieStore.set("accessToken", resJson.accessToken, {
       httpOnly: true,
-      maxAge: 3600, // 1 hora
-    });
-
-    await cookieStore.set("refreshToken", resJson.refreshToken, {
-      httpOnly: true,
-      maxAge: 604800, // 7 días
+      maxAge: 8 * 60 * 60, // 8 horas = 28,800 segundos
     });
 
     delete resJson.accessToken;
-    delete resJson.refreshToken;
     return NextResponse.json(resJson);
   }
 
