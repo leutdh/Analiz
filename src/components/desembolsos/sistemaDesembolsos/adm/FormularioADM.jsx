@@ -258,7 +258,9 @@ export default function FormularioADM({ grillaAdm }) {
       setShowForm(true);
     } catch (error) {
       console.error(error);
-      alert("Error al consultar la API de deudas.");
+      alert("Error al consultar la API de deudas. INGRESAR NOMBRE Y APELLIDO MANUALMENTE");
+      setShowForm(true);
+
     }
   };
 
